@@ -1,14 +1,13 @@
-const ships = [
-  {
-    id: "001",
-    name: "Univeral Bulin",
-    rarity: "ELITE",
-    type: "DESTROYER",
-  },
-];
+const { PrismaClient } = require("@prisma/client");
+
+const prisma = new PrismaClient();
+
+const { delayPromise } = require("../../utils/delay");
 
 module.exports = {
   Query: {
-    ships: () => ships,
+    ships: async () => {
+      return await delayPromise(prisma.ship.findMany());
+    },
   },
 };

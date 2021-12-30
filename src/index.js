@@ -27,11 +27,12 @@ const {
     res.send("please go to /react");
   });
 
-  app.use(express.static(path.resolve(__dirname, "../client/react/build")));
-  app.get("/react", (req, res) => {
-    res.sendFile(
-      path.resolve(__dirname, "../client/react/build", "index.html")
-    );
+  app.use(
+    "/react",
+    express.static(path.resolve(__dirname, "../client/react/build"))
+  );
+  app.get("/react", function (req, res) {
+    res.sendFile(path.join(__dirname, "../client/react/build", "index.html"));
   });
 
   await server.start();
@@ -43,5 +44,5 @@ const {
   await new Promise((resolve) =>
     httpServer.listen({ port: process.env.PORT || 4000 }, resolve)
   );
-  console.log("Server ready");
+  console.log("Server ready at http://localhost:4000");
 })();
