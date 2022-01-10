@@ -1,5 +1,8 @@
 const { ApolloServer } = require("apollo-server-express");
-const { ApolloServerPluginDrainHttpServer } = require("apollo-server-core");
+const {
+  ApolloServerPluginDrainHttpServer,
+  ApolloServerPluginLandingPageGraphQLPlayground,
+} = require("apollo-server-core");
 const path = require("path");
 const express = require("express");
 const http = require("http");
@@ -20,7 +23,10 @@ const {
   const server = new ApolloServer({
     typeDefs: [ShipTypeDefs, EquipmentTypeDefs],
     resolvers: [ShipResolvers, EquipmentResolvers],
-    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+    plugins: [
+      ApolloServerPluginDrainHttpServer({ httpServer }),
+      ApolloServerPluginLandingPageGraphQLPlayground(),
+    ],
   });
 
   app.get("/", (req, res) => {

@@ -11,4 +11,15 @@ const GetAllShips = gql`
   }
 `;
 
-export { GetAllShips };
+const DeleteShip = gql`
+  mutation DeleteShip($id: String!) {
+    deleteShip(id: $id) {
+      id
+      name
+      rarity
+      type
+    }
+  }
+`;
+
+export { GetAllShips, DeleteShip };

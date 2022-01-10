@@ -1,5 +1,12 @@
 const { gql } = require("apollo-server-express");
 
+const ShipAttributes = `
+  id: String!
+  name: String!
+  rarity: Rarity!
+  type: Type!
+`;
+
 module.exports = gql`
   enum Rarity {
     NORMAL
@@ -27,13 +34,27 @@ module.exports = gql`
   }
 
   type Ship {
+    ${ShipAttributes}
+  }
+
+  input ShipInput {
+    ${ShipAttributes}
+  }
+
+  input ShipUpdate {
     id: String!
-    name: String!
-    rarity: Rarity!
-    type: Type!
+    name: String
+    rarity: Rarity
+    type: Type
   }
 
   type Query {
     ships: [Ship!]
+  }
+
+  type Mutation {
+    createShip(ship: ShipInput!): Ship!
+    deleteShip(id: String!): Ship!
+    updateShip(update: ShipUpdate!): Ship!
   }
 `;

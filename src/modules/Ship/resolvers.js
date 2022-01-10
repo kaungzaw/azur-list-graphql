@@ -2,12 +2,30 @@ const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
 
-const { delayPromise } = require("../../utils/delay");
-
 module.exports = {
   Query: {
     ships: async () => {
-      return await delayPromise(prisma.ship.findMany());
+      const ships = await prisma.ship.findMany();
+      return ships;
+    },
+  },
+  Mutation: {
+    createShip: async (_parent, { ship }) => {
+      const createdShip = await prisma.ship.create({ data: ship });
+      return createdShip;
+    },
+    deleteShip: async (_parent, { id }) => {
+      const deletedShip = await prisma.ship.delete({
+        where: { id },
+      });
+      return deletedShip;
+    },
+    updateShip: async (_parent, { update }) => {
+      const updatedShip = await prisma.ship.update({
+        where: { id: update.id },
+        data: update,
+      });
+      return updatedShip;
     },
   },
 };
