@@ -50,6 +50,7 @@ module.exports = gql`
 
   type Query {
     ships: [Ship!]
+    ship(id: String!): Ship!
   }
 
   type Mutation {

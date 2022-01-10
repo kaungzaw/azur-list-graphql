@@ -8,6 +8,13 @@ module.exports = {
       const ships = await prisma.ship.findMany();
       return ships;
     },
+    ship: async (_, { id }) => {
+      const ship = await prisma.ship.findUnique({
+        where: { id },
+        rejectOnNotFound: true,
+      });
+      return ship;
+    },
   },
   Mutation: {
     createShip: async (_parent, { ship }) => {

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Typography, Table, Button, Modal } from "antd";
+import { Typography, Table, Button, Modal, message } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { useQuery, useMutation, gql } from "@apollo/client";
 import { GetAllShips, DeleteShip } from "gqls/ShipGql";
@@ -42,18 +42,26 @@ const Ships = () => {
     },
   });
 
-  const handleDelete = (record) => {
+  const handleDelete = ({ id, name }) => {
     Modal.confirm({
       title: "Do you want to delete this ship?",
       icon: <ExclamationCircleOutlined />,
       content: (
         <>
-          <div>{`Id: ${record.id}`}</div>
-          <div>{`Name: ${record.name}`}</div>
+          <div>{`Id: ${id}`}</div>
+          <div>{`Name: ${name}`}</div>
         </>
       ),
       onOk() {
-        return deleteShip({ variables: { id: record.id } });
+        return new Promise(async (resolve, reject) => {
+          try {
+            await deleteShip({ variables: { id } });
+            resolve();
+          } catch (error) {
+            message.error(error.toString());
+            reject();
+          }
+        });
       },
       onCancel() {},
     });
@@ -86,9 +94,15 @@ const Ships = () => {
       title: "Action",
       key: "action",
       render: (record) => (
-        <Button type="danger" onClick={() => handleDelete(record)}>
-          Delete
-        </Button>
+        <>
+          <Button type="danger" onClick={() => handleDelete(record)}>
+            Delete
+          </Button>
+          &nbsp;&nbsp;&nbsp;
+          <Link to={`/ships/update/${record.id}`}>
+            <Button type="primary">Update</Button>
+          </Link>
+        </>
       ),
     },
   ];

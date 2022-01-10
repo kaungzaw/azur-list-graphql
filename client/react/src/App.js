@@ -12,6 +12,7 @@ const { Title } = Typography;
 const Home = delayLazy(import("pages/Home"));
 const Ships = delayLazy(import("pages/Ships"));
 const CreateShip = delayLazy(import("pages/Ships/CreateShip"));
+const UpdateShip = delayLazy(import("pages/Ships/UpdateShip"));
 
 const App = () => {
   const location = useLocation();
@@ -40,18 +41,11 @@ const App = () => {
           {location.pathname.split("/").map(
             (i, index) =>
               index !== 0 && (
-                <Breadcrumb.Item>
+                <Breadcrumb.Item key={i}>
                   <Link to={`/${i}`}>{i || "home"}</Link>
                 </Breadcrumb.Item>
               )
           )}
-          {/* <Routes>
-            <Route path="/" element={<Breadcrumb.Item>Home</Breadcrumb.Item>} />
-            <Route
-              path="/ships/*"
-              element={<Breadcrumb.Item>Ships</Breadcrumb.Item>}
-            />
-          </Routes> */}
         </Breadcrumb>
         <div className={styles.site_layout_content}>
           <React.Suspense fallback={<Loading />}>
@@ -77,6 +71,14 @@ const App = () => {
                 element={
                   <ErrorBoundary>
                     <CreateShip />
+                  </ErrorBoundary>
+                }
+              />
+              <Route
+                path="/ships/update/:id"
+                element={
+                  <ErrorBoundary>
+                    <UpdateShip />
                   </ErrorBoundary>
                 }
               />

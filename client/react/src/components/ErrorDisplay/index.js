@@ -6,7 +6,7 @@ const ErrorDisplay = ({ error }) => {
     <Result
       status="error"
       title="There are some problems with your operation."
-      extra={<details>{error && error.message}</details>}
+      extra={<details>{error && error.toString()}</details>}
     />
   );
 };
